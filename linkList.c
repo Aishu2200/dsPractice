@@ -17,6 +17,14 @@ void initList(struct node **h) {
     (*h)=getNode(0);
 }
 
+void append(struct node *h,int value) {
+    h->info++;
+    while(h->next!=NULL) {
+        h=h->next;
+    }
+    h->next=getNode(value);
+}
+
 void insert(struct node *head,int value) {
     struct node *temp=NULL;
     struct node *p=head->next;
@@ -36,7 +44,7 @@ void insert(struct node *head,int value) {
 void display(struct node *head) {
     struct node *p=head->next;
     while(p) {
-        printf("%d",p->info);
+        printf("%d ",p->info);
         p=p->next;
     }
 }
@@ -53,6 +61,29 @@ struct node *search(struct node *head,int key){
     return head;
 }
 
+void freeNode(struct node *p) {
+    free(p);
+}
+
+void delete(struct node *head,int pos) {
+
+    struct node *q=head;
+    struct node *p=head->next;
+
+    int i;
+    if(pos > head->info) {
+        printf("\nInvalid position\n");
+        exit(1);
+    }
+    for(i=0;i < pos-1;i++) {
+        q = p;
+        p = p->next;
+    }
+    q->next=p->next;
+    freeNode(p);
+    head->info--;
+}
+
 int main() {
     struct node *head=NULL;
     int value,ch,key;
@@ -61,7 +92,7 @@ int main() {
     initList(&head);
 
     while(1) {
-        printf("\n1.Insert  2.Display:  3.Search:\t");
+        printf("\n1.Insert  2.Display:  3.Search:  4.delete  5.append\t");
         printf(("\nEnter the choice:\t"));
         scanf("%d",&ch);
 
@@ -82,8 +113,17 @@ int main() {
                     else                     
                         printf("key is not found!!");
                     break;
+            case 4:printf("\nEnter the position to delete:\t");
+                   scanf("%d",&value);
+                   delete(head,value);
+                   printf("deleted succefully...!");
+                   break;
+            case 5:printf("Enter the value:\t");
+                   scanf("%d",&value);
+                   append(head,value);
+                   break;
 
         
          }
-}
+    }
 }
